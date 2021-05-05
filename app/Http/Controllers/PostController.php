@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,8 +18,13 @@ class PostController extends Controller
     {
         $posts = Post::all();
 
+        foreach ($posts as $post){
+            $user = User::find($post->user_id);
+            $post->user = $user;
+        }
+
         return view("posts")->with([
-            'posts'=>$posts
+            'posts' => $posts,
         ]);
     }
 
@@ -41,21 +47,26 @@ class PostController extends Controller
     public function store(Request $request)
     {
 
-        $rules= array(
-            "title"=>"required|string",
-            "description"=>"required|string"
+        $rules = array(
+            "title" => "required|string",
+            "description" => "required|string",
+            "user_id" => "required|numeric"
         );
 
         $validator = Validator::make($request->all(), $rules);
 
-        if($validator->fails())
+        if ($validator->fails())
             return back()->withErrors($validator);
 
         $post = new Post();
-        $post->title= $request->title;
-        $post->description=$request->description;
+        $post->title = $request->title;
+        $post->description = $request->description;
 
+        $user = User::find($request->user_id);
+        if ($user == NULL)
+            return back()->withErrors($user);
 
+        $post->user_id = $request->user_id;
         $post->save();
 
         return redirect()->action([PostController::class, 'index']);

@@ -21,4 +21,4 @@ Route::get('/welcome', function () {
 });
 
 
-Route::resource("posts", PostController::class);
+Route::resource("/", PostController::class);

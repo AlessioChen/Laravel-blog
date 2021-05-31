@@ -51,7 +51,8 @@ class AuthController extends Controller
 
         Auth::user()->currentAccessToken()->delete();
 
-        return 'LOGOUT COMPLETED';
+
+        return response(null, 204);
     }
 
 
@@ -66,26 +67,19 @@ class AuthController extends Controller
     public function register(AuthRegisterRequest $request): AuthResource
     {
 
-        // Check if passwords corresponds
-
-        if ($request->password1 != $request->password2) {
-            throw ValidationException::withMessages([
-                'password' => ["passwords don't match"],
-            ]);
-        }
-
         // Check if email is already taken
-
         if (User::where('email', $request->email)->exists()) {
             throw new Exception('user already exist');
         }
+
+
 
         //Save user
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password1,
+            'password' => Hash::make($request->password)
         ]);
 
 

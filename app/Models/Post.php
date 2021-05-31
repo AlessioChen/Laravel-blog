@@ -21,4 +21,15 @@ class Post extends Model
     ];
 
 
+
+
+    //*******RELATIONS***************************** */
+    /**
+     *
+     * Get Owner
+     */
+    //TODO add relation with user
+    public function owner()
+    {
+    }
 }

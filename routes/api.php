@@ -19,9 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1'], function(){
 
     // Login Route
-
     Route::post('login' , [AuthController::class, 'login']);
- 
+
+    // Register Route
+    Route::post('register', [AuthController::class, 'register']);
+
     // Routes for logged users
     Route::group([
         'middleware' => ['auth:sanctum']

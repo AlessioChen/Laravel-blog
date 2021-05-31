@@ -2,10 +2,17 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class AuthResource extends JsonResource
 {
+    private $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
     /**
      * Transform the resource into an array.
      *
@@ -14,10 +21,9 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email
+            'user' => new UserResource($this->user)
         ];
     }
 }

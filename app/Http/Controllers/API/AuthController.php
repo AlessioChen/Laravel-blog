@@ -4,12 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthLoginRequest;
+use App\Http\Requests\AuthLogoutRequest;
 use App\Http\Requests\AuthRegisterRequest;
 use App\Http\Resources\AuthLoginResource;
 use App\Http\Resources\AuthResource;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -37,8 +39,23 @@ class AuthController extends Controller
         return new AuthLoginResource($user);
     }
 
+    /**
+     * Attempt logout
+     *
+     * @param AuthLogoutRequest $request
+     * @return string
+     */
+    public function logout(AuthLogoutRequest $request)
+    {
 
- /**
+
+        Auth::user()->currentAccessToken()->delete();
+
+        return 'LOGOUT COMPLETED';
+    }
+
+
+    /**
      * Attempt registration
      *
      * @param AuthRegisterRequest $request

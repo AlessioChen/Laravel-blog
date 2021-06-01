@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
         $user->name = 'Admin';
         $user->email = 'admin@admin.it';
         $user->password = Hash::make('password');
+
         $user->save();
 
         User::factory()->count(10)->create();

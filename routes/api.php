@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\PostController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +32,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         // Logout Route
         Route::get('logout', [AuthController::class, 'logout']);
+        Route::post('tag', [TagController::class, 'tagUser']);
+        Route::get('tag', [TagController::class, 'getTags']);
 
         //Resources Routes
         Route::apiResources([

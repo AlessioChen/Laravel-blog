@@ -4,21 +4,25 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostDestroyRequest;
+use App\Http\Requests\PostGetTagRequest;
 use App\Http\Requests\PostIndexRequest;
 use App\Http\Requests\postShowRequest;
 use App\Http\Requests\PostStoreRequest;
+use App\Http\Requests\PostTagUserRequest;
 use App\Http\Requests\PostUpdateRequest;
 use App\Http\Resources\PostResource;
+use App\Http\Resources\PostTagResource;
 use App\Models\Post;
 use App\Models\User;
-use App\traits\HasFilters;
+use App\Notifications\UserTagNotification;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class PostController extends Controller
 {
+
 
     protected $model;
 
@@ -155,4 +159,8 @@ class PostController extends Controller
 
         return response(null, 204);
     }
+
+
+
+
 }

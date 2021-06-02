@@ -19,7 +19,7 @@ class PostResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'user' => new UserResource(User::find($this->user_id))
+            'user' => new UserResource($this->whenLoaded('user'))
         ];
     }
 }

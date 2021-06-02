@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-
 use App\traits\ValidationTrait;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class PostIndexRequest extends FormRequest
+class postShowRequest extends FormRequest
 {
     use ValidationTrait;
 

@@ -4,16 +4,24 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostIndexRequest;
+use App\Http\Requests\postShowRequest;
 use App\Http\Requests\PostStoreRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\User;
+use App\traits\HasFilters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Test\Constraint\ResponseIsRedirected;
 
 class PostController extends Controller
 {
+
+    protected $model;
+
+    public function __construct(Post $model)
+    {
+        $this->model = $model;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -23,33 +31,21 @@ class PostController extends Controller
     public function index(PostIndexRequest $request)
     {
         $posts = Post::query();
-
-        //Filter by text
-        if ($title = $request->query('title')) {
-            $posts->where(function ($query) use ($title) {
-                $query->where('title', 'like', '%' . $title . '%');
-            });
-        }
-
-        //Filter by description
-        if ($title = $request->query('description')) {
-            $posts->where(function ($query) use ($title) {
-                $query->where('description', 'like', '%' . $title . '%');
-            });
-        }
-
-        //Filter by user name
-        if ($user_name = $request->query('user_name')) {
-            $posts->where(function ($query) use ($user_name) {
-                $user = User::where('name', $user_name)->firstOrFail();
-                $query->where('user_id', 'like', $user->id);
-            });
-        }
+        $posts = $this->model->filter($request->all());
 
 
-        // preload the relationships
+        // //Filter by user name
+        // if ($user_name = $request->query('user_name')) {
+        //     $posts->where(function ($query) use ($user_name) {
+        //         $user = User::where('name', $user_name)->firstOrFail();
+        //         $query->where('user_id', 'like', $user->id);
+        //     });
+        // }
+
+
+        //preload the relationships
         if ($request->has('with')) {
-            $posts->load($request->query('with'));
+            $posts->with($request->query('with'));
         }
 
 
@@ -78,7 +74,6 @@ class PostController extends Controller
 
 
         return new PostResource($post);
-
     }
 
 
@@ -89,9 +84,13 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post, postShowRequest $request)
     {
-        //
+        if ($request->query('with')) {
+            $post->load($request->query('with'));
+        }
+
+        return new PostResource($post);
     }
 
     /**

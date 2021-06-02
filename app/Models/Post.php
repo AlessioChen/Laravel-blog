@@ -2,24 +2,36 @@
 
 namespace App\Models;
 
+use App\traits\FilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, FilterTrait;
+
+    protected $table = 'posts';
 
     /**
-     * Seed the application's database.
+     * set fillable fields for filtering
      *
-     * @return void
+     * @var array
      */
-    protected $fillable = [
-        'title',
-        'description',
-        'user_id'
-    ];
+    protected $fillable = ['title', 'description', 'user_id'];
+
+    /**
+     * set string fields for filtering
+     * @var array
+     */
+    protected $likeFilterFields = ['title', 'description'];
+
+
+    /**
+     * set boolean fields for filtering
+     * @var array
+     */
+    protected $boolFilterFields = [];
 
 
 
@@ -31,7 +43,7 @@ class Post extends Model
      *
      * @return BelongsTo
      */
-    public function owner(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }

@@ -21,9 +21,15 @@ trait FilterTrait
 
         $tableName = $this->getTable();
         $defaultFillableFields = $this->fillable;
+
         foreach ($filters as $field => $value) {
+
             if (in_array($field, $this->boolFilterFields) && $value != null) {
                 $builder->where($field, (bool)$value);
+                continue;
+            }
+            if (in_array($field, $this->integerFilterFields) && $value != null) {
+                $builder->where($field, (int)$value);
                 continue;
             }
             if (!in_array($field, $defaultFillableFields) || !$value) {
@@ -44,10 +50,8 @@ trait FilterTrait
 
     public function scopeFilterByForein($builder, $filters = [])
     {
-        if(!$filters){
+        if (!$filters) {
             return $builder;
         }
-
-
     }
 }

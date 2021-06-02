@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\traits\FilterTrait;
+use App\Traits\FilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +18,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'description', 'user_id'];
+    protected $fillable = ['title', 'description', 'user_id', 'id'];
 
     /**
      * set string fields for filtering
@@ -32,6 +32,12 @@ class Post extends Model
      * @var array
      */
     protected $boolFilterFields = [];
+
+    /**
+     * set boolean integer for filtering
+     * @var array
+     */
+    protected $integerFilterFields = ['user_id'];
 
 
 

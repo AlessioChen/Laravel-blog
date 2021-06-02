@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\traits\ValidationTrait;
+use App\Traits\ValidationTrait;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 

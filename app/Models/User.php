@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\traits\FilterTrait;
+use App\Traits\FilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -33,7 +33,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'id'
     ];
+
 
     /**
      * The attributes that should be hidden for arrays.

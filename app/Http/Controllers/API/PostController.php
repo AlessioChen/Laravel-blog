@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PostIndexRequest;
 use App\Http\Requests\postShowRequest;
 use App\Http\Requests\PostStoreRequest;
+use App\Http\Requests\PostUpdateRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\User;
 use App\traits\HasFilters;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -31,23 +34,14 @@ class PostController extends Controller
     public function index(PostIndexRequest $request)
     {
         $posts = Post::query();
+
+        // $posts = Post::filter($request->all());
         $posts = $this->model->filter($request->all());
-
-
-        // //Filter by user name
-        // if ($user_name = $request->query('user_name')) {
-        //     $posts->where(function ($query) use ($user_name) {
-        //         $user = User::where('name', $user_name)->firstOrFail();
-        //         $query->where('user_id', 'like', $user->id);
-        //     });
-        // }
-
 
         //preload the relationships
         if ($request->has('with')) {
             $posts->with($request->query('with'));
         }
-
 
         //Pagination
         $per_page = $request->query('per_page') ?: 15;
@@ -61,16 +55,23 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  PostStoreRequest  $request
+     * @return PostResource
      */
     public function store(PostStoreRequest $request)
     {
+        DB::beginTransaction();
 
-        $post = Post::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'user_id' => Auth::user()->id
+        try {
+            $post = Post::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'user_id' => Auth::user()->id
 
-        ]);
+            ]);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
 
 
         return new PostResource($post);
@@ -81,8 +82,8 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Post
+     * @return PostResource
      */
     public function show(Post $post, postShowRequest $request)
     {
@@ -96,13 +97,26 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     *
+     *
      */
-    public function update(Request $request, $id)
+    public function update(PostUpdateRequest $request, Post $post)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            if (Auth::user()->id != $post->user_id) {
+                throw new Exception("You can't update this post");
+            }
+
+            $post->update($request->only(['title', 'description']));
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
+
+        return new PostResource($post);
     }
 
     /**

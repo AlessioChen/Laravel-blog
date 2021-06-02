@@ -2,16 +2,11 @@
 
 namespace App\Http\Requests;
 
-
-use App\Traits\ValidationTrait;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class PostIndexRequest extends FormRequest
+class PostUpdateRequest extends FormRequest
 {
-    use ValidationTrait;
-
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -22,7 +17,6 @@ class PostIndexRequest extends FormRequest
         return Auth::check();
     }
 
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -31,7 +25,8 @@ class PostIndexRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'sometimes|string',
+            'description' => 'sometimes|string'
         ];
     }
 }

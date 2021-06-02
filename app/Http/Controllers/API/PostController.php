@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostDestroyRequest;
 use App\Http\Requests\PostIndexRequest;
 use App\Http\Requests\postShowRequest;
 use App\Http\Requests\PostStoreRequest;
@@ -61,17 +62,20 @@ class PostController extends Controller
     {
         DB::beginTransaction();
 
+
         try {
             $post = Post::create([
                 'title' => $request->title,
                 'description' => $request->description,
                 'user_id' => Auth::user()->id
-
             ]);
+
+            DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;
         }
+
 
 
         return new PostResource($post);
@@ -97,9 +101,10 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     *@param PostUpdateRequest
+     *@param Post
      *
-     *
-     *
+     * @return PostResource
      */
     public function update(PostUpdateRequest $request, Post $post)
     {
@@ -111,6 +116,9 @@ class PostController extends Controller
             }
 
             $post->update($request->only(['title', 'description']));
+
+
+            DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;
@@ -122,11 +130,29 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
+     * @param  PostDestroyRequest
+     * @param  Post
+     * @return
      */
-    public function destroy($id)
+    public function destroy(PostDestroyRequest $request, Post $post)
     {
-        //
+
+        DB::beginTransaction();
+
+        try {
+            if (Auth::user()->id != $post->user_id) {
+                throw new Exception("You can't update this post");
+            }
+
+            $post->delete();
+
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
+        }
+
+        return response(null, 204);
     }
 }

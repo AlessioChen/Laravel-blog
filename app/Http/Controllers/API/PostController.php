@@ -4,17 +4,21 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostIndexRequest;
+use App\Http\Requests\PostStoreRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Test\Constraint\ResponseIsRedirected;
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param PostIndexRequest
+     * @return PostResource
      */
     public function index(PostIndexRequest $request)
     {
@@ -60,11 +64,21 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  PostStoreRequest  $request
      */
-    public function store(Request $request)
+    public function store(PostStoreRequest $request)
     {
+
+        $post = Post::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'user_id' => Auth::user()->id
+
+        ]);
+
+
+        return new PostResource($post);
+
     }
 
 

@@ -41,7 +41,11 @@ class TagNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line($this->user->email . ' tagged you');
+            ->subject('Tag Notification')
+            ->line($this->user->email . ' tagged you in one post')
+            ->action('Check it!', url('/'))
+            ->greeting('Thanks')
+            ->line('Best regards!');
     }
 
     public function toDatabase($notifiable)

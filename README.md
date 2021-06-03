@@ -1,13 +1,13 @@
 # Laravel blog api 
 
-#### About the project
+### About the project
 
 Project made for Full Stack developer course. 
 
-#### Requirements
+### Requirements
 It requires the creation of API Rest using Laravel framework that allows the user trhough authentication to add text posts to a feed giving the possibility to tag other users and edit the post itself.
 
-#### Endpoints
+### Endpoints
 
 - Authentication: Login
 - Authentication : Registration
@@ -17,14 +17,17 @@ It requires the creation of API Rest using Laravel framework that allows the use
 - Feed: edit post (Title Description, User which is associated)
 - Feed: post Delete
 - Notification list of a tag in a post 
-- Send an email every time a user is tagged in a post
 
-#### Build With
+### Features
+- Send an email every time a user is tagged in a post
+- Log table for all actions on the posts
+
+### Build With
 - PHP using Laravel as framework
 
-#### Getting started 
+### Getting started
 Make sure to have docker installed in the computer.
-1. Clone the repo 
+1. Clone the repo
 ``` bash
 git clone https://github.com/AlessioChen/Laravel-blog.git
 ```
@@ -39,7 +42,7 @@ git clone https://github.com/AlessioChen/Laravel-blog.git
  vendor/bin/sail sail up 
 ```
 
-#### Usage 
+### Usage 
 - To test the endpoints use [postman](https://www.postman.com/).
 - Random data can be seed into the DB with the command
 ```
@@ -50,7 +53,7 @@ vendor/bin/sail sail artisan migrate --seed
 http://localhost/api/v1/login
 ```
 
-#### Acknowledgements
+### Acknowledgements
 
 - [Laravel](https://laravel.com/)
 - [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum)

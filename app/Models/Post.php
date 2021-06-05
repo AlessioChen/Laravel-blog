@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Jobs\StorePostJob;
+use App\Models\Tag;
 use App\Traits\FilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Auth;
-
 use function Illuminate\Events\queueable;
 
 class Post extends Model
@@ -96,5 +96,15 @@ class Post extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+
+    /**
+     * Get tags
+     * @return BelongsToMany
+     */
+    public function tags() : BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'posts_tags');
     }
 }

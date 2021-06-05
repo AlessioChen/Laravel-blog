@@ -26,7 +26,8 @@ class TagUserRequest extends FormRequest
     {
 
         return [
-            'email' => 'required|string|exists:users,email'
+            'user_id' => 'required|string|exists:users,id',
+            'post_id' => 'required|exists:posts,id'
         ];
     }
 }

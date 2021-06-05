@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TagResource extends JsonResource
+class Tagresource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,9 +15,9 @@ class TagResource extends JsonResource
      */
     public function toArray($request)
     {
-
         return [
-            'tagged by' => $this->data['email'],
+            'user' => new UserResource(User::find($this->user_id)),
+            'tagged_user' => new UserResource(User::find($this->tagged_user_id)),
             'at' => date("Y-m-d h:i:sa", strtotime($this->created_at))
         ];
     }

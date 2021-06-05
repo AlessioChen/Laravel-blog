@@ -16,7 +16,7 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
+            $table->foreignId('user_id')->constrained();
             $table->text('title');
             $table->longText('description')->nullable();
             $table->timestamps();
@@ -25,8 +25,8 @@ class CreatePostsTable extends Migration
 
         Schema::create('posts_logs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('post_id');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('post_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->enum('action', [
                 PostLog::ACTION_CREATE,
                 PostLog::ACTION_UPDATE,
@@ -34,9 +34,6 @@ class CreatePostsTable extends Migration
             ]);
 
             $table->timestamps();
-
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

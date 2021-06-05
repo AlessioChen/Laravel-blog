@@ -32,7 +32,11 @@ Route::group(['prefix' => 'v1'], function () {
 
         // Logout Route
         Route::get('logout', [AuthController::class, 'logout']);
+
+        // Tag user route 
         Route::post('tag', [TagController::class, 'tagUser']);
+
+        // List
         Route::get('tag', [TagController::class, 'getTags']);
 
         //Resources Routes

@@ -46,12 +46,4 @@ trait FilterTrait
         return $builder;
     }
 
-
-
-    public function scopeFilterByForein($builder, $filters = [])
-    {
-        if (!$filters) {
-            return $builder;
-        }
-    }
 }

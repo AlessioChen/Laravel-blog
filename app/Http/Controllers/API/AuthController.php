@@ -10,7 +10,6 @@ use App\Http\Resources\AuthLoginResource;
 use App\Http\Resources\AuthResource;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;

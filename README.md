@@ -60,6 +60,6 @@ http://localhost/api/v1/login
 - [Docker](https://www.docker.com/)
 - [Mysql](https://www.mysql.com/it/)
 - [Postman](https://www.postman.com/)
-
+- [Mailtrap](https://mailtrap.io)
 
 

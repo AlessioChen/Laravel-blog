@@ -4,21 +4,15 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostDestroyRequest;
-use App\Http\Requests\PostGetTagRequest;
 use App\Http\Requests\PostIndexRequest;
 use App\Http\Requests\postShowRequest;
 use App\Http\Requests\PostStoreRequest;
-use App\Http\Requests\PostTagUserRequest;
 use App\Http\Requests\PostUpdateRequest;
 use App\Http\Resources\PostResource;
-use App\Http\Resources\PostTagResource;
 use App\Models\Post;
-use App\Models\User;
-use App\Notifications\UserTagNotification;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
 
 class PostController extends Controller
 {
@@ -43,10 +37,12 @@ class PostController extends Controller
         // $posts = Post::filter($request->all());
         $posts = $this->model->filter($request->all());
 
-        //preload the relationships
+        // preload the relationships
         if ($request->has('with')) {
             $posts->with($request->query('with'));
         }
+
+
 
         //Pagination
         $per_page = $request->query('per_page') ?: 15;
@@ -67,6 +63,7 @@ class PostController extends Controller
         DB::beginTransaction();
 
 
+
         try {
             $post = Post::create([
                 'title' => $request->title,
@@ -79,8 +76,6 @@ class PostController extends Controller
             DB::rollBack();
             throw $exception;
         }
-
-
 
         return new PostResource($post);
     }
@@ -159,8 +154,4 @@ class PostController extends Controller
 
         return response(null, 204);
     }
-
-
-
-
 }
